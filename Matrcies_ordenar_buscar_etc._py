@@ -1,0 +1,287 @@
+import numpy as np
+import math as mt
+import os
+borrarPantalla = lambda: os.system ("cls")
+
+#Método que calcula el promedio de una matriz dada por parámetro
+#parámetro matriz a la cual se le calculará el promedio
+def calcularPromedioMatriz(matriz):
+  return np.mean(matriz)
+  
+  #Método que ordena ascendentemente una matriz dada por parámetro
+#parámetro matriz la cual se ordenará ascendentemente
+def ordenarMatriz(matriz):
+  return np.sort(matriz, axis=None)
+  
+  #Método que permite realizar la búsqueda de un número dentro de una matriz
+#Parámetro matriz  en la cual se buscará el número
+#Parámetro número el cual será buscado en la matriz
+def buscarNumeroMatriz(matriz, valor):
+  #Algoritmo búsqueda binaria
+
+  lista = matriz
+
+  primero = 0
+  ultimo = len(lista) - 1
+  encontrado = False
+
+  while primero <= ultimo and not encontrado:
+      mitad = (primero + ultimo) // 2
+      if lista[mitad] == valor:
+          encontrado = True
+      else:
+          if valor < lista[mitad]:
+              ultimo = mitad - 1
+          else:
+              primero = mitad + 1
+
+  return encontrado
+  
+  #Método que calcula las ocurrancias de cada número dentro de la matriz hasta que
+#se encuentre un número con una ocurrencia mayor al valor pasado por parámetro
+#Parámetro matriz de la cual se contará la ocurrencia de cada uno de sus elementos
+#Parámetro ocurrencia es la cantidad mínima de ocurrencia que se buscará
+def calcularOcurrenciasNumero(matriz, ocurrencia):
+  #Algoritmo búsqueda secuencial
+  valor = -1
+  contador = 0
+  encontrado = False
+
+  for i in range(len(matriz)):
+    for j in range(len(matriz[i])):
+      contador = 0
+      valor = matriz[i][j]
+
+      for x in range(len(matriz)):
+        for z in range(len(matriz[x])):
+          if valor == matriz[x][z]:
+            contador += 1
+      if contador > ocurrencia:
+        encontrado = True
+        break
+    if contador > ocurrencia:
+      break
+    
+  return encontrado
+  
+  #Método que ordena un arreglo con el algoritmo burbuja
+#Parámetro vector el caul será organizado
+def odenamientoPorBurbuja(vector):
+  #Algoritmo ordenamiento por burbuja
+  permutation = True
+  iteracion = 0
+  while permutation == True:
+      permutation = False
+      iteracion = iteracion + 1
+      for actual in range(0, len(vector) - iteracion):
+          if vector[actual] > vector[actual + 1]:
+              permutation = True
+              # Intercambiamos los dos elementos
+              vector[actual], vector[actual + 1] = \
+              vector[actual + 1],vector[actual]
+  return vector  
+  
+  #Método que retorna una cantidad de números impares que se encuentran en una matriz
+#Parámetro matriz de la cual serán evaluados sus elementos para identificar los impares
+#Parámetro cantidad es el valor de números impare retornados
+def obtenerImpares(matriz, cantidad):
+  vector = []
+ 
+  for i in range(len(matriz)):
+    for j in range(len(matriz[i])):
+      if matriz[i][j] % 2 != 0:
+        vector.append (matriz[i][j])
+      if len(vector) == cantidad:
+        break
+    if len(vector) == cantidad:
+      break
+
+  return vector
+  
+  #Método que retorna un vector ordenado, se realiza su ordenamiento medio del algoritmo por selección
+#Parámetro vector el cual será organizado
+def ordenamientoPorSeleccion(vector):
+    nb = len(vector)
+    for actual in range(0,nb):    
+        mas_pequeno = actual
+        for j in range(actual+1,nb) :
+            if vector[j] > vector[mas_pequeno] :
+                mas_pequeno = j
+        if min is not actual :
+            temp = vector[actual]
+            vector[actual] = vector[mas_pequeno]
+            vector[mas_pequeno] = temp
+    return vector
+    
+    
+    #Método que retorna los números primos hasta un límite
+#Parámetro límite el cual determina la cantidad de números primos a calcular
+def cribaEratostenes(limite):
+  #Criba de Eratóstenes
+  primos = []
+  numeros= []
+
+  for i in range(1,limite+1):
+    numeros.append(True)
+    
+  #Recorrer los números y para cada uno
+  for n in range(2, limite):
+    #Si es primo recorrer los múltiplos y marcarlos como no primo
+    if numeros[n]:
+      for i in range(n*n,limite,n):
+        numeros[i] = False
+
+  #Mostrar la lista de los primos
+  for n in range(2, limite):
+    if numeros[n]:
+      primos.append(n)
+
+  return primos
+  
+  #Método que retorna un arreglo con los número primos de la matriz
+#Parámetro matriz la cual almacena los elementos a determinar si son primos
+def obtenerNumerosPrimos(matriz):
+  vector = []
+  primos = []
+
+  for i in range(len(matriz)):
+    for j in range(len(matriz[i])):
+      aux = False
+      if matriz[i][j] == 2 or matriz[i][j] == 3:
+        aux = True
+      elif matriz[i][j] > 3:
+        primos = cribaEratostenes(int(mt.sqrt(matriz[i][j])))
+        #z = 2
+        for z in primos:
+          if matriz[i][j] % z == 0:
+            aux = False
+            break
+          else:
+            aux = True
+      if aux:
+        vector.append(matriz[i][j])
+  return vector
+  
+  #Método de ordenamiento que retorna el arreglo ordenado, implementa el algoritmo de ordenamiento por inserción
+#Parámetro vector con el arreglo a ordenar
+def ordenamientoPorInsercion(vector):
+    for i in range(1,len(vector)):
+        actual = vector[i]
+        j = i
+        #Desplazamiento de los elementos de la matriz }
+        while j>0 and vector[j-1]>actual:
+            vector[j]=vector[j-1]
+            j = j-1
+        #insertar el elemento en su lugar
+        vector[j]=actual
+    return vector
+    
+    #Método que retorna un arreglo con una cantidad de múltimos de x valor
+def obtenerMultiplos(limite, n):
+  vector = []
+  for i in range(0,limite*n,n):
+    vector.append(i)
+  return vector
+  
+  #Método principal que controla el acceso a los métodos
+def main(opc, matriz):
+  if len(matriz) == 0 and opc > 1:
+    print("Matriz no creada")
+  elif opc == 1:
+    while True:
+      n = int(input("Introduce el tamaño de la matriz nxn: \n"))
+      if n <= 1 :
+        print("Debe ingresar un número mayor a 1") 
+      else:
+        matriz = np.random.randint(0, 14, size=(n, n))
+        print("matriz creada")
+        break
+
+    print("Punto a")
+    print("Matriz ", n, "x", n, " de números aleatorios")
+    print(matriz)
+  elif opc == 2:
+    print("-------------------------------------------")
+    print("Inciso I")
+    print("El promedio de todos los números de la matriz es: " + str(calcularPromedioMatriz(matriz)))
+  elif opc == 3:
+    print("-------------------------------------------")
+    print("Inciso II")
+    
+    n = int(input("Introduce el número a buscar: \n"))
+    aux = np.array(ordenarMatriz(matriz))
+    
+    if buscarNumeroMatriz(aux, n):
+      print("El número ", n, " sí existe en la matriz")
+    else:
+      print("El número ", n, " no existe en la matriz")
+  elif opc == 4:
+    print("-------------------------------------------")
+    print("Inciso III")
+    n = int(input("Introduce la cantidad de ocurrencias para \nvalidar si hay un número que la supere: \n"))
+
+    if calcularOcurrenciasNumero(matriz, n):
+      print("Sí hay al menos un número con más ocurrencias que ", n)
+    else:
+      print("No hay al menos un número con más ocurrencias que ", n)
+
+  elif opc == 5:
+    print("-------------------------------------------")
+    print("Inciso IV")
+    n = int(input("Introduce la cantidad de números impares que desea visualizar de la matriz: \n"))
+
+    vector = obtenerImpares(matriz, n)
+    if len(vector) == n:
+      print("Vector con los ", n, " primeros números impares de la matriz:")
+      print(odenamientoPorBurbuja(vector))
+    else:
+      print("No hay ", n, " números impares en la matriz. Sólo hay ", len(vector))
+
+  elif opc == 6:
+    print("-------------------------------------------")
+    print("Inciso V")
+    print("Vector con los números primos de la matriz:")
+    vector = obtenerNumerosPrimos(matriz)
+    print(ordenamientoPorSeleccion(vector))
+
+  elif opc == 7:
+    print("-------------------------------------------")
+    print("Inciso VI")
+    n = int(input("Ingresa el número del cual deseas ver sus múltiplos: \n"))
+    sms = "Cúal es la cantidad de múltiplos que desea ver del número " + str(n) + ": \n"
+    limite = int(input(sms))
+    vector = obtenerMultiplos(limite, n)
+    print(ordenamientoPorInsercion(vector))
+
+  elif opc == 8:
+    print("Matriz inicial de números aleatorios")
+    print(matriz)
+  else:
+    print("Opción inválida")
+  return matriz
+  
+  
+  #Método que controla el menú para el acceso al método principal
+matriz = []
+while True:
+  try:
+    print("\n\n*******************************************BIENVENIDO********************************************\nTercera parte\n")
+    print("Digite la opción a ejecutar: ")
+    opc = int(input("1. Declarar e inicializar matriz nxn.\n2. Calcular promedio matriz.\n3. Buscar número en matriz.\n4. Validar cantidad ocurrencias en matriz.\n5. Visualizar primeros n números impares en matriz.\n6. Visualizar números primos matriz.\n7. Calcular múltiplos de un número.\n8. Ver matriz inicial\n9. Finalizar.\n"))
+    if opc == 9:
+      print("Hasta la próxima (con voz de loquendo)")
+      break
+    else:
+      borrarPantalla() #Limpia la pantalla
+      matriz = main(opc, matriz)
+
+  except ValueError:
+    print("El valor ingresado no es valido")
+  except KeyboardInterrupt:
+    print("No lo detenga así profe :v")
+  except UnboundLocalError:
+    print("Primero debe crear la matriz")
+  except:
+    print("Algo salió mal. Posiblemente no ha ejecutado todas las celdas de código")
+  finally:
+    print("Trabajo tan largo xd")
